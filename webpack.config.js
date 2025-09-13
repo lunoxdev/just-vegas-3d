@@ -22,6 +22,7 @@ module.exports = {
   output: {
     filename: "app.js",
     path: path.resolve(__dirname, "public"),
+    publicPath: "/",
   },
   devServer: {
     static: "./public",
