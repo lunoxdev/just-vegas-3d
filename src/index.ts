@@ -6,12 +6,12 @@ import {
   LightingEnvironment,
   ImageBasedLighting,
   Model,
-  Mesh3D,
   Light,
   LightType,
   ShadowCastingLight,
   ShadowQuality,
 } from "pixi3d/pixi7";
+import { manifest } from "./manifest";
 
 (async () => {
   // Create and initialize the application
@@ -24,40 +24,14 @@ import {
   // Append the application canvas to the document body
   document.body.appendChild(app.view as HTMLCanvasElement);
 
-  const manifest = {
-    bundles: [
-      {
-        name: "assets",
-        assets: [
-          {
-            name: "diffuse",
-            srcs: "assets/chromatic/diffuse.cubemap", // Diffuse cubemap for image-based lighting
-          },
-          {
-            name: "specular",
-            srcs: "assets/chromatic/specular.cubemap", // Specular cubemap for image-based lighting
-          },
-          {
-            name: "justVegas",
-            srcs: "assets/models/just-vegas-1.glb", // Just Vegas model in GLB format
-          },
-        ],
-      },
-    ],
-  };
-
   await Assets.init({ manifest });
   let assets = await Assets.loadBundle("assets");
 
   // Load and position the "just vegas" model
   let model1 = app.stage.addChild(Model.from(assets["justVegas"]));
-  model1.y = -1;
-  model1.x = -2;
-
-  // Create a ground plane for the scene
-  let ground = app.stage.addChild(Mesh3D.createPlane());
-  ground.y = -0.8;
-  ground.scale.set(10, 1, 10);
+  model1.y = -0.8;
+  model1.x = 0;
+  model1.scale.set(0.006); // Further reduce the size of the model
 
   // Set up image-based lighting with diffuse and specular cubemaps
   LightingEnvironment.main.imageBasedLighting = new ImageBasedLighting(
@@ -83,9 +57,9 @@ import {
 
   // Enable shadows for the ground, model, and justVegas models
   let pipeline = app.renderer.plugins.pipeline;
-  pipeline.enableShadows(ground, shadowCastingLight);
   pipeline.enableShadows(model1, shadowCastingLight);
 
   // Initialize camera orbit control
   let control = new CameraOrbitControl(app.view as HTMLCanvasElement);
+  control.angles.x = 20;
 })();
