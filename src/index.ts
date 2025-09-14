@@ -37,9 +37,9 @@ import { manifest } from "./manifest";
 
   // Load and position the "just vegas" model
   const model1 = app.stage.addChild(Model.from(assets["justVegas"]));
-  model1.y = -0.8;
+  model1.y = -0.5;
   model1.x = 0;
-  model1.scale.set(0.006); // Further reduce the size of the model
+  model1.scale.set(0.003); // Further reduce the size of the model
 
   // Set up image-based lighting with diffuse and specular cubemaps
   LightingEnvironment.main.imageBasedLighting = new ImageBasedLighting(
