@@ -27,6 +27,12 @@ import { manifest } from "./manifest";
   await Assets.init({ manifest });
   let assets = await Assets.loadBundle("assets");
 
+  // Hide the loading spinner
+  const loadingSpinner = document.getElementById("loading-spinner");
+  if (loadingSpinner) {
+    loadingSpinner.style.display = "none";
+  }
+
   // Load and position the "just vegas" model
   let model1 = app.stage.addChild(Model.from(assets["justVegas"]));
   model1.y = -0.8;
