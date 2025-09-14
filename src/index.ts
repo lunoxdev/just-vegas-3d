@@ -15,7 +15,7 @@ import { manifest } from "./manifest";
 
 (async () => {
   // Create and initialize the application
-  let app = new Application({
+  const app = new Application({
     backgroundColor: 0x000000,
     resizeTo: window,
     antialias: true,
@@ -25,16 +25,18 @@ import { manifest } from "./manifest";
   document.body.appendChild(app.view as HTMLCanvasElement);
 
   await Assets.init({ manifest });
-  let assets = await Assets.loadBundle("assets");
+  const assets = await Assets.loadBundle("assets");
 
   // Hide the loading spinner
-  const loadingSpinner = document.getElementById("loading-spinner");
+  const loadingSpinner = document.querySelector(
+    ".loading-spinner"
+  ) as HTMLElement;
   if (loadingSpinner) {
     loadingSpinner.style.display = "none";
   }
 
   // Load and position the "just vegas" model
-  let model1 = app.stage.addChild(Model.from(assets["justVegas"]));
+  const model1 = app.stage.addChild(Model.from(assets["justVegas"]));
   model1.y = -0.8;
   model1.x = 0;
   model1.scale.set(0.006); // Further reduce the size of the model
@@ -46,14 +48,14 @@ import { manifest } from "./manifest";
   );
 
   // Create a directional light source
-  let directionalLight = new Light();
+  const directionalLight = new Light();
   directionalLight.intensity = 1;
   directionalLight.type = LightType.directional;
   directionalLight.rotationQuaternion.setEulerAngles(25, 120, 0);
   LightingEnvironment.main.lights.push(directionalLight);
 
   // Set up shadow casting for the directional light
-  let shadowCastingLight = new ShadowCastingLight(
+  const shadowCastingLight = new ShadowCastingLight(
     app.renderer as Renderer,
     directionalLight,
     { shadowTextureSize: 1024, quality: ShadowQuality.medium }
@@ -62,10 +64,10 @@ import { manifest } from "./manifest";
   shadowCastingLight.shadowArea = 15;
 
   // Enable shadows for the ground, model, and justVegas models
-  let pipeline = app.renderer.plugins.pipeline;
+  const pipeline = app.renderer.plugins.pipeline;
   pipeline.enableShadows(model1, shadowCastingLight);
 
   // Initialize camera orbit control
-  let control = new CameraOrbitControl(app.view as HTMLCanvasElement);
+  const control = new CameraOrbitControl(app.view as HTMLCanvasElement);
   control.angles.x = 20;
 })();
